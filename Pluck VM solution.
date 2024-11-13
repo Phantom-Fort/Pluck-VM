@@ -1,0 +1,81 @@
+Pluck VM solution
+
+
+Operating System: Ubuntu
+Machine Name: Pluck
+
+Analysis:
+    1. Performed netdiscover Scan to discover the machine’s IP
+
+![Netdiscover scan](./images/1.png)
+
+    2. Then I performed a basic nmap scan to see active ports.
+
+![Nmap Scan](./images/2.png)
+
+    3. HTTP port is open, so I opened the page on my browser.
+
+![Pluck webpage](./images/3.png)
+
+I found out nothing of interest on the source code, so I continued to dig deeper.
+
+    4. I then performed a basic directory enumeration using gobuster and the big.txt wordlist.
+
+![Directory enumeration](./images/4.png)
+
+I found a directory named /pluck
+
+    5. I opened the directory on my browser. 
+
+![/pluck directory webpage](./images/5.png)
+
+    6. I found a log on page on /pluck. But it requires a password which we do not have.
+
+![pluck login page](./images/6.png)
+
+    7. I then carried out a directory enumeration using dirb on kali linux.
+
+![directory enumeration on the /pluck webpage](./images/7.png)
+
+    8. We found some nice-looking directories that we need to look into.
+
+![/pluck/robots.txt webpage](./images/8.png)
+
+    9.  On opening the robots.txt file I found an Interesting file named /s3cr3t.txt. then we opened that directory.
+
+![/s3cr3t.txt](./images/9.png)
+
+    10. Then I used this login info to sign in on the /login.php
+
+![/login.php](./images/10.png)
+![/login.php](./images/11.png)
+
+Unfortunately, there exist nothing Interesting, But Pluck 4.7.16 is Vulnerable to Local File Injection
+
+    11. Pluck 4.7.16 Exploit — https://www.exploit-db.com/exploits/50826
+
+![Exploit.db](./images/12.png)
+
+    12. Let’s use the Vulnerability to Inject a Reverse Shell into the Machine
+
+    13. I then download the rev_shell.py and shell.tar from https://github.com/Cyberw1ng/Bug-Bounty
+
+![Python reverse shell upload](./images/13.png)
+
+    14. I performed a command on the web shell.
+
+![web shell](./images/14.png)
+
+    15. then I set up a netcat listener on port 2929.
+
+![netcat](./images/15.png)
+
+    16. Then I used the reverse shell command on the web shell.
+
+![reverse shell](./images/16.png)
+![Shell on my terminal](./images/17.png)
+![shell](./images/18.png)
+![privilege escalation](./images/19.png)
+![Root flag](./images/20.png)
+
+Root Flag: eacb474b122937f83b04d9050f0cfc23b89d0c2d3a79c57d928d4472089df2cc
